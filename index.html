@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Coursera: R Programming, Homework 3 Question 2 : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Coursera: R Programming, Homework 3 Question 2</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2">View on GitHub</a>
+
+          <h1 id="project_title">Coursera: R Programming, Homework 3 Question 2</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h3>
+
+<p>This data set is from the John Hopkins University Coursera Course titled: "R Programming". The current examples are pulled from <strong>question 2</strong> of <strong>homework assignment 3</strong>. You can find the text (verbatim) for the assignment below:</p>
+
+<p><em>Write a function called best that take two arguments: the 2-character abbreviated name of a state and an</em>
+<em>outcome name. The function reads the outcome-of-care-measures.csv le and returns a character vector</em>
+<em>with the name of the hospital that has the best (i.e. lowest) 30-day mortality for the specied outcome</em>
+<em>in that state. The hospital name is the name provided in the Hospital.Name variable. The outcomes can</em>
+<em>be one of "heart attack", "heart failure", or "pneumonia". Hospitals that do not have data on a particular</em>
+<em>outcome should be excluded from the set of hospitals when deciding the rankings.</em>
+<em>Handling ties. If there is a tie for the best hospital for a given outcome, then the hospital names should</em>
+<em>be sorted in alphabetical order and the rst hospital in that set should be chosen (i.e. if hospitals \b", \c",</em>
+<em>and \f" are tied for best, then hospital \b" should be returned).</em>
+<em>The function should use the following template.</em></p>
+
+<pre><code>best &lt;- function(state, outcome) {
+## Read outcome data
+## Check that state and outcome are valid
+## Return hospital name in that state with lowest 30-day death
+## rate
+}
+</code></pre>
+
+<p><em>The function should check the validity of its arguments. If an invalid state value is passed to best, the</em>
+<em>function should throw an error via the stop function with the exact message \invalid state". If an invalid</em>
+<em>outcome value is passed to best, the function should throw an error via the stop function with the exact</em>
+<em>message \invalid outcome".</em></p>
+
+<h2>
+<a id="the-following-code-below-will-accomplish-this-task" class="anchor" href="#the-following-code-below-will-accomplish-this-task" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The following code below will accomplish this task.</h2>
+
+<pre><code>## Read in the data
+
+outcome_dat&lt;-read.csv("outcome-of-care-measures.csv", header = TRUE)
+
+## Select only the key variables from the original data.
+outcome_dat_organized &lt;- data.frame(as.character(outcome_dat$Hospital.Name),as.character(outcome_dat$State), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia))
+
+# Rename the variables
+names(outcome_dat_organized)&lt;-c("hospital", "state", "heart attack", "heart failure", "pneumonia")
+
+# Remove all the NA values.
+outcome_dat_organized$`heart attack`[outcome_dat_organized$`heart attack` == "Not Available"] &lt;- NA
+outcome_dat_organized$`heart failure`[outcome_dat_organized$`heart failure` == "Not Available"] &lt;- NA
+outcome_dat_organized$pneumonia[outcome_dat_organized$pneumonia == "Not Available"] &lt;- NA
+
+outcome_dat_organized &lt;- outcome_dat_organized[complete.cases(outcome_dat_organized),]
+outcome_dat_organized &lt;- droplevels(outcome_dat_organized[complete.cases(outcome_dat_organized),])
+
+## Create a function to search the lowest mortality rate based on state, and the type of death.
+
+## Note, states must be entered as a two letter CAPITALIZED abbreviation surrounded by quotes
+## e.g., "CA", "WA", "MI"
+
+## Options for the type of death are "heart attack", "heart failure", and "pneumonia". These must
+## be entered VERBATIM in quotes.
+
+best &lt;- function(location, outcome) {
+
+        states &lt;- outcome_dat_organized$state
+
+        outcomes &lt;- colnames(outcome_dat_organized)
+
+        y &lt;- match(location, states, nomatch = as.numeric(0))
+
+        z &lt;- match(outcome, outcomes, nomatch = as.numeric(0))
+
+        if (y == 0 | z == 0) {
+
+        print("Invalid State and/or invalid outcome. Please enter a valid value.")
+
+        } else {
+
+        state_subset &lt;- subset(outcome_dat_organized, location == state)
+
+        names(state_subset)&lt;- c("hospital", "state", "heart attack", "heart failure", "pneumonia")
+
+        state_subset$hospital &lt;- as.character(state_subset$hospital)
+
+        outcome &lt;- tolower(outcome)
+
+        min &lt;- with(state_subset, state_subset[order(state_subset[[outcome]], state_subset$hospital), ])
+
+        print(min[1,1]) 
+
+       } 
+}
+
+## Test the function a few times.
+
+best("BB", "heart failure")
+
+best("OH", "pneumonia")
+
+best("ID", "heart attack")
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Coursera: R Programming, Homework 3 Question 2 maintained by <a href="https://github.com/mjtat">mjtat</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
