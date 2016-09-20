@@ -6,17 +6,15 @@ outcome_dat<-read.csv("outcome-of-care-measures.csv", header = TRUE)
 outcome_dat_organized <- data.frame(as.character(outcome_dat$Hospital.Name),as.character(outcome_dat$State), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia))
 
 # Rename the variables
-names(outcome_dat_organized)<-c("Hospital Name", "State", "Heart Attack", "Heart Failure", "Pneumonia")
+names(outcome_dat_organized)<-c("hospital", "state", "heart attack", "heart failure", "pneumonia")
 
 # Remove all the NA values.
-outcome_dat_organized$Heart_Attack[outcome_dat_organized$Heart_Attack == "Not Available"] <- NA
-outcome_dat_organized$Heart_Failure[outcome_dat_organized$Heart_Failure == "Not Available"] <- NA
-outcome_dat_organized$Pneumonia[outcome_dat_organized$Pneumonia == "Not Available"] <- NA
+outcome_dat_organized$`heart attack`[outcome_dat_organized$`heart attack` == "Not Available"] <- NA
+outcome_dat_organized$`heart failure`[outcome_dat_organized$`heart failure` == "Not Available"] <- NA
+outcome_dat_organized$pneumonia[outcome_dat_organized$pneumonia == "Not Available"] <- NA
 
 outcome_dat_organized <- outcome_dat_organized[complete.cases(outcome_dat_organized),]
 outcome_dat_organized <- droplevels(outcome_dat_organized[complete.cases(outcome_dat_organized),])
-
-outcome_matrix <- as.matrix(outcome_dat_organized)
 
 ## Create a function to search the lowest mortality rate based on state, and the type of death.
 
@@ -26,9 +24,23 @@ outcome_matrix <- as.matrix(outcome_dat_organized)
 ## Options for the type of death are "heart attack", "heart failure", and "pneumonia". These must
 ## be entered VERBATIM in quotes.
 
-best <- function(state, outcome) {
+best <- function(location, outcome) {
         
-        state_subset <- subset(outcome_dat_organized, State == state)
+        states <- outcome_dat_organized$state
+        
+        outcomes <- colnames(outcome_dat_organized)
+        
+        y <- match(location, states, nomatch = as.numeric(0))
+        
+        z <- match(outcome, outcomes, nomatch = as.numeric(0))
+        
+        if (y == 0 | z == 0) {
+                
+        print("Invalid State and/or invalid outcome. Please enter a valid value.")
+                
+        } else {
+        
+        state_subset <- subset(outcome_dat_organized, location == state)
         
         names(state_subset)<- c("hospital", "state", "heart attack", "heart failure", "pneumonia")
         
@@ -38,12 +50,14 @@ best <- function(state, outcome) {
         
         min <- with(state_subset, state_subset[order(state_subset[[outcome]], state_subset$hospital), ])
 
-        print(min[1,1])
+        print(min[1,1]) 
+        
+       } 
 }
 
 ## Test the function a few times.
 
-best("CA", "heart failure")
+best("BB", "heart failure")
 
 best("OH", "pneumonia")
 
