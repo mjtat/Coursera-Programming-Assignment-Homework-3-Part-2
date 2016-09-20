@@ -61,7 +61,7 @@
 <em>message "invalid outcome".</em></p>
 
 <h2>
-<a id="the-following-code-below-will-accomplish-this-task-for-the-most-part" class="anchor" href="#the-following-code-below-will-accomplish-this-task-for-the-most-part" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The following code below will accomplish this task (for the most part).</h2>
+<a id="the-following-code-below-will-accomplish-this-task" class="anchor" href="#the-following-code-below-will-accomplish-this-task" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The following code below will accomplish this task.</h2>
 
 <pre><code>## Read in the data
 
@@ -99,11 +99,20 @@ best &lt;- function(location, outcome) {
 
         z &lt;- match(outcome, outcomes, nomatch = as.numeric(0))
 
-        if (y == 0 | z == 0) {
+        if (z == 0 &amp;&amp; y == 0) {
 
-        print("Invalid State and/or invalid outcome. Please enter a valid value.")
+        print("Invalid State and Outcome. Please enter valid values.") 
+
+        } else if (z == 0) {
+
+          print("Invalid outcome. Please enter a valid outcome")
+
+        } else if (y == 0) {
+
+          print("Invalid State. Please enter valid State.")
 
         } else {
+
 
         state_subset &lt;- subset(outcome_dat_organized, location == state)
 
@@ -116,9 +125,9 @@ best &lt;- function(location, outcome) {
         min &lt;- with(state_subset, state_subset[order(state_subset[[outcome]], state_subset$hospital), ])
 
         print(min[1,1]) 
-
        } 
-}
+}     
+
 
 ## Test the function a few times.
 
@@ -127,17 +136,24 @@ best("BB", "heart failure")
 best("OH", "pneumonia")
 
 best("ID", "heart attack")
+
+best("AB", "cancer")
 </code></pre>
 
 <h3>
 <a id="heres-what-the-function-should-give-you-when-you-enter-some-values" class="anchor" href="#heres-what-the-function-should-give-you-when-you-enter-some-values" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Here's what the function should give you when you enter some values.</h3>
 
 <pre><code>&gt; best("BB", "heart failure")
-[1] "Invalid State and/or invalid outcome. Please enter a valid value."
+[1] "Invalid State. Please enter valid State."
+&gt; 
 &gt; best("OH", "pneumonia")
 [1] "SOUTH POINTE HOSPITAL"
+&gt; 
 &gt; best("ID", "heart attack")
 [1] "PORTNEUF MEDICAL CENTER"
+&gt; 
+&gt; best("AB", "cancer")
+[1] "Invalid State and Outcome. Please enter valid values."
 </code></pre>
       </section>
     </div>
