@@ -66,6 +66,8 @@ best <- function(location, outcome) {
 
 ## Test the function a few times.
 
+best("TX", "heart attack")
+
 best("TX", "heart failure")
 
 best("MD", "heart attack")
