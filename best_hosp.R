@@ -34,11 +34,20 @@ best <- function(location, outcome) {
         
         z <- match(outcome, outcomes, nomatch = as.numeric(0))
         
-        if (y == 0 | z == 0) {
+        if (z == 0 && y == 0) {
                 
-        print("Invalid State and/or invalid outcome. Please enter a valid value.")
+        print("Invalid State and Outcome. Please enter valid values.") 
                 
+        } else if (z == 0) {
+          
+          print("Invalid outcome. Please enter a valid outcome")
+          
+        } else if (y == 0) {
+          
+          print("Invalid State. Please enter valid State.")
+        
         } else {
+        
         
         state_subset <- subset(outcome_dat_organized, location == state)
         
@@ -51,9 +60,9 @@ best <- function(location, outcome) {
         min <- with(state_subset, state_subset[order(state_subset[[outcome]], state_subset$hospital), ])
 
         print(min[1,1]) 
-        
        } 
-}
+}     
+   
 
 ## Test the function a few times.
 
@@ -62,3 +71,5 @@ best("BB", "heart failure")
 best("OH", "pneumonia")
 
 best("ID", "heart attack")
+
+best("AB", "cancer")
