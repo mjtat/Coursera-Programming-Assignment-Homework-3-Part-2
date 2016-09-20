@@ -67,6 +67,9 @@
 <h2>
 <a id="the-following-code-below-will-accomplish-this-task" class="anchor" href="#the-following-code-below-will-accomplish-this-task" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The following code below will accomplish this task.</h2>
 
+<h3>
+<a id="first-read-in-the-data-and-do-some-cleaning-and-organizing" class="anchor" href="#first-read-in-the-data-and-do-some-cleaning-and-organizing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>First read in the data, and do some cleaning and organizing.</h3>
+
 <pre><code>## Read in the data
 
 outcome_dat&lt;-read.csv("outcome-of-care-measures.csv", header = TRUE)
@@ -92,8 +95,12 @@ outcome_dat_organized &lt;- droplevels(outcome_dat_organized[complete.cases(outc
 
 ## Options for the type of death are "heart attack", "heart failure", and "pneumonia". These must
 ## be entered VERBATIM in quotes.
+</code></pre>
 
-best &lt;- function(location, outcome) {
+<h3>
+<a id="now-create-the-best-function-the-first-section-will-first-evaluate-if-there-are-matches-to-the-functions-inputs-if-there-are-not-it-will-kick-you-out-of-the-function-and-tell-you-to-enter-a-valid-value" class="anchor" href="#now-create-the-best-function-the-first-section-will-first-evaluate-if-there-are-matches-to-the-functions-inputs-if-there-are-not-it-will-kick-you-out-of-the-function-and-tell-you-to-enter-a-valid-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Now, create the <code>best()</code> function. The first section will first evaluate if there are matches to the functions inputs. If there are not, it will kick you out of the function and tell you to enter a valid value.</h3>
+
+<pre><code>best &lt;- function(location, outcome) {
 
         states &lt;- outcome_dat_organized$state
 
@@ -116,9 +123,12 @@ best &lt;- function(location, outcome) {
           print("Invalid State. Please enter valid State.")
 
         } else {
+</code></pre>
 
+<h3>
+<a id="the-next-part-of-the-function-essentially-searches-for-the-lowest-mortality-rate-by-state-and-outcome-if-there-is-a-tie-it-chooses-the-entry-that-comes-first-alphabetically" class="anchor" href="#the-next-part-of-the-function-essentially-searches-for-the-lowest-mortality-rate-by-state-and-outcome-if-there-is-a-tie-it-chooses-the-entry-that-comes-first-alphabetically" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The next part of the function essentially searches for the lowest mortality rate by state and outcome. If there is a tie, it chooses the entry that comes first alphabetically.</h3>
 
-        state_subset &lt;- subset(outcome_dat_organized, location == state)
+<pre><code>        state_subset &lt;- subset(outcome_dat_organized, location == state)
 
         names(state_subset)&lt;- c("hospital", "state", "heart attack", "heart failure", "pneumonia")
 
@@ -131,9 +141,12 @@ best &lt;- function(location, outcome) {
         print(min[1,1]) 
        } 
 }     
+</code></pre>
 
+<h3>
+<a id="finally-test-the-function-a-few-times" class="anchor" href="#finally-test-the-function-a-few-times" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Finally, test the function a few times.</h3>
 
-## Test the function a few times.
+<pre><code>## Test the function a few times.
 
 best("BB", "heart failure")
 
