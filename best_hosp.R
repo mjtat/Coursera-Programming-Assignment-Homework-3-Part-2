@@ -1,9 +1,9 @@
 ## Read in the data
 
-outcome_dat<-read.csv("outcome-of-care-measures.csv", header = TRUE)
+outcome_dat<-read.csv("outcome-of-care-measures.csv", header = TRUE, stringsAsFactors = FALSE)
 
 ## Select only the key variables from the original data.
-outcome_dat_organized <- data.frame(as.character(outcome_dat$Hospital.Name),as.character(outcome_dat$State), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia))
+outcome_dat_organized <- data.frame(as.character(outcome_dat$Hospital.Name),as.character(outcome_dat$State), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia), stringsAsFactors = FALSE)
 
 # Rename the variables
 names(outcome_dat_organized)<-c("hospital", "state", "heart attack", "heart failure", "pneumonia")
@@ -65,6 +65,10 @@ best <- function(location, outcome) {
    
 
 ## Test the function a few times.
+
+best("TX", "heart failure")
+
+best("MD", "heart attack")
 
 best("BB", "heart failure")
 
