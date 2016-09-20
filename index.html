@@ -16,14 +16,14 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2">View on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Question-2">View on GitHub</a>
 
           <h1 id="project_title">Coursera: R Programming, Homework 3 Question 2</h1>
           <h2 id="project_tagline"></h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Question-2/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Question-2/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -60,6 +60,31 @@
 <em>outcome value is passed to best, the function should throw an error via the stop function with the exact</em>
 <em>message "invalid outcome".</em></p>
 
+<p><em>Here is some sample output from the function.</em></p>
+
+<pre><code>&gt; source("best.R")
+
+&gt; best("TX", "heart attack")
+[1] "CYPRESS FAIRBANKS MEDICAL CENTER"
+
+&gt; best("TX", "heart failure")
+[1] "FORT DUNCAN MEDICAL CENTER"
+
+&gt; best("MD", "heart attack")
+[1] "JOHNS HOPKINS HOSPITAL, THE"
+
+&gt; best("MD", "pneumonia")
+[1] "GREATER BALTIMORE MEDICAL CENTER"
+
+&gt; best("BB", "heart attack")
+Error in best("BB", "heart attack") : invalid state
+
+&gt; best("NY", "hert attack")
+Error in best("NY", "hert attack") : invalid outcome
+</code></pre>
+
+<hr>
+
 <p>The data file associated with this script can be found here:</p>
 
 <p><a href="https://github.com/mjtat/Coursera-Programming-Assignment-Homework-3-Part-2/blob/master/hospital-data.csv">Coursera R Programming Homework Assignment 3</a></p>
@@ -72,10 +97,10 @@
 
 <pre><code>## Read in the data
 
-outcome_dat&lt;-read.csv("outcome-of-care-measures.csv", header = TRUE)
+outcome_dat&lt;-read.csv("outcome-of-care-measures.csv", header = TRUE, stringsAsFactors = FALSE)
 
 ## Select only the key variables from the original data.
-outcome_dat_organized &lt;- data.frame(as.character(outcome_dat$Hospital.Name),as.character(outcome_dat$State), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia))
+outcome_dat_organized &lt;- data.frame(as.character(outcome_dat$Hospital.Name),as.character(outcome_dat$State), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure), as.double(outcome_dat$Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia), stringsAsFactors = FALSE)
 
 # Rename the variables
 names(outcome_dat_organized)&lt;-c("hospital", "state", "heart attack", "heart failure", "pneumonia")
@@ -148,27 +173,35 @@ outcome_dat_organized &lt;- droplevels(outcome_dat_organized[complete.cases(outc
 
 <pre><code>## Test the function a few times.
 
+best("TX", "heart failure")
+best("MD", "heart attack")
 best("BB", "heart failure")
-
 best("OH", "pneumonia")
-
 best("ID", "heart attack")
-
 best("AB", "cancer")
 </code></pre>
 
 <h3>
 <a id="heres-what-the-function-should-give-you-when-you-enter-some-values" class="anchor" href="#heres-what-the-function-should-give-you-when-you-enter-some-values" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Here's what the function should give you when you enter some values.</h3>
 
-<pre><code>&gt; best("BB", "heart failure")
+<pre><code>&gt; best("TX", "heart attack")
+[1] "CYPRESS FAIRBANKS MEDICAL CENTER"
+
+&gt; best("TX", "heart failure")
+[1] "FORT DUNCAN MEDICAL CENTER"
+
+&gt; best("MD", "heart attack")
+[1] "JOHNS HOPKINS HOSPITAL, THE"
+
+&gt; best("BB", "heart failure")
 [1] "Invalid State. Please enter valid State."
-&gt; 
+
 &gt; best("OH", "pneumonia")
-[1] "SOUTH POINTE HOSPITAL"
-&gt; 
+[1] "GRANDVIEW HOSPITAL &amp; MEDICAL CENTER"
+
 &gt; best("ID", "heart attack")
 [1] "PORTNEUF MEDICAL CENTER"
-&gt; 
+
 &gt; best("AB", "cancer")
 [1] "Invalid State and Outcome. Please enter valid values."
 </code></pre>
